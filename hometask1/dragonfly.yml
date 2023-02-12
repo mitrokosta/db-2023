@@ -1,0 +1,33 @@
+version: '3.8'
+services:
+  df1:
+    container_name: df1
+    image: docker.dragonflydb.io/dragonflydb/dragonfly
+    networks:
+      - df1-df2
+      - df1-redis
+    ulimits:
+      memlock: -1
+  df2:
+    container_name: df2
+    image: docker.dragonflydb.io/dragonflydb/dragonfly
+    networks:
+      - df1-df2
+      - df2-redis
+    ulimits:
+      memlock: -1
+  redis:
+    container_name: redis
+    image: redis
+    networks:
+      - df1-redis
+      - df2-redis
+networks:
+  df1-redis:
+    name: df1-redis
+  df2-redis:
+    name: df2-redis
+  df1-df2:
+    name: df1-df2
+
+
