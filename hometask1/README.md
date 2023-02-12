@@ -7,7 +7,7 @@
 > Replication is almost ready - one can set up a master/slave setup with a usual "replicaof" command on a secondary replica (FAILOVER is not supported yet)
 
 Для проверки сценария использован docker-compose. Используются 3 контейнера: два инстанса Dragonfly (df1 и df2) и один инстанс redis клиента, для подключения к :
-1. Поднимем контейнеров `docker-compose -f dragonfly.yml up -d`.
+1. Поднимем контейнеры `docker-compose -f dragonfly.yml up -d`.
 2. Подключимся к инстансу df1 `docker exec -it redis redis-cli -h df1`. Эту сессию назовем сессией 1.
 3. Подключимся к инстансу df2 `docker exec -it redis redis-cli -h df2`. Эту сессию назовем сессией 2.
 4. В сессии 2 сделаем df2 репликой df1 `replicaof df1 6379`. Получим `OK`.
