@@ -1,0 +1,72 @@
+version: '3.8'
+services:
+  sc1:
+    container_name: sc1
+    image: scylladb/scylla
+    networks:
+      sc1-client:
+        ipv4_address: 10.0.1.2
+      servers:
+        ipv4_address: 10.0.0.2
+    command:
+      - --seeds=10.0.0.2
+      - --smp=1
+      - --listen-address=10.0.0.2
+      - --rpc-address=10.0.1.2
+  sc2:
+    container_name: sc2
+    image: scylladb/scylla
+    networks:
+      sc2-client:
+        ipv4_address: 10.0.2.2
+      servers:
+        ipv4_address: 10.0.0.3
+    command:
+      - --seeds=10.0.0.2
+      - --smp=1
+      - --listen-address=10.0.0.3
+      - --rpc-address=10.0.2.2
+  sc3:
+    container_name: sc3
+    image: scylladb/scylla
+    networks:
+      sc3-client:
+        ipv4_address: 10.0.3.2
+      servers:
+        ipv4_address: 10.0.0.4
+    command:
+      - --seeds=10.0.0.2
+      - --smp=1
+      - --listen-address=10.0.0.4
+      - --rpc-address=10.0.3.2
+  client:
+    container_name: client
+    image: cassandra
+    networks:
+      sc1-client:
+        ipv4_address: 10.0.1.3
+      sc2-client:
+        ipv4_address: 10.0.2.3
+      sc3-client:
+        ipv4_address: 10.0.3.3
+networks:
+  servers:
+    name: servers
+    ipam:
+      config:
+        - subnet: 10.0.0.0/24
+  sc1-client:
+    name: sc1-client
+    ipam:
+      config:
+        - subnet: 10.0.1.0/24
+  sc2-client:
+    name: sc2-client
+    ipam:
+      config:
+        - subnet: 10.0.2.0/24
+  sc3-client:
+    name: sc3-client
+    ipam:
+      config:
+        - subnet: 10.0.3.0/24
